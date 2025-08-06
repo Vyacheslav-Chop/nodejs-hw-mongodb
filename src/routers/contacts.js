@@ -2,9 +2,10 @@ import { Router } from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import {
   createContactController,
+  deleteContactByIdController,
   getAllContactsController,
   getContactByIdController,
-  patchContactController,
+  updateContactByIdController,
 } from '../controllers/contacts.js';
 
 const contactsRouter = Router();
@@ -20,7 +21,12 @@ contactsRouter.post('/contacts', ctrlWrapper(createContactController));
 
 contactsRouter.patch(
   '/contacts/:contactId',
-  ctrlWrapper(patchContactController),
+  ctrlWrapper(updateContactByIdController),
+);
+
+contactsRouter.delete(
+  '/contacts/:contactId',
+  ctrlWrapper(deleteContactByIdController),
 );
 
 export default contactsRouter;
