@@ -6,6 +6,7 @@ import {
   getContactById,
   updateContactById,
 } from '../sservices/contacts.js';
+import { buildContactsFilter } from '../utils/buildContactsFilter.js';
 
 export const getAllContactsController = async (req, res) => {
   const contacts = await getAllContacts({
@@ -13,6 +14,7 @@ export const getAllContactsController = async (req, res) => {
     perPage: req.validatedQuery.perPage,
     sortBy: req.validatedQuery.sortBy,
     sortOrder: req.validatedQuery.sortOrder,
+    filters: buildContactsFilter(req.validatedQuery),
   });
 
   res.status(200).json({

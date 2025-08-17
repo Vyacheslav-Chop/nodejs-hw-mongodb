@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { contactTypeValidation, isFavouriteValidation } from './helpers.js';
 
 export const getContactsQuerySchema = Joi.object({
   page: Joi.number().min(1).default(1).messages({
@@ -20,4 +21,8 @@ export const getContactsQuerySchema = Joi.object({
   sortOrder: Joi.string().valid('asc', 'desc').default('asc').messages({
     'any.only': '"sortOrder" must be either "asc" or "desc"',
   }),
+  type: contactTypeValidation().messages({
+    'any.only': '"type" must be one of "work", "home", "personal"',
+  }),
+  isFavourite: isFavouriteValidation(),
 });
