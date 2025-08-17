@@ -8,7 +8,10 @@ import {
 } from '../sservices/contacts.js';
 
 export const getAllContactsController = async (req, res) => {
-  const contacts = await getAllContacts();
+  const contacts = await getAllContacts({
+    page: req.validatedQuery.page,
+    perPage: req.validatedQuery.perPage,
+  });
 
   res.status(200).json({
     status: 200,

@@ -11,12 +11,18 @@ import { validateBody } from '../middlewares/validateBody.js';
 import { createContactSchema } from '../validation/createContactShema.js';
 import { updateContactSchema } from '../validation/updateContactSchema.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { validateQuery } from '../middlewares/validateQuery.js';
+import { getContactsQuerySchema } from '../validation/getContactsQuerySchema.js';
 
 const contactsRouter = Router();
 
 contactsRouter.use('/contacts/:contactId', isValidId);
 
-contactsRouter.get('/contacts', ctrlWrapper(getAllContactsController));
+contactsRouter.get(
+  '/contacts',
+  validateQuery(getContactsQuerySchema),
+  ctrlWrapper(getAllContactsController),
+);
 
 contactsRouter.get(
   '/contacts/:contactId',
