@@ -4,6 +4,7 @@ import {
   emailValidation,
   isFavouriteValidation,
   nameValidation,
+  objectIdValidation,
   phoneNumberValidation,
 } from './helpers.js';
 
@@ -24,4 +25,5 @@ export const updateContactSchema = Joi.object({
   contactType: contactTypeValidation().messages({
     'any.only': 'Contact type must be one of: work, home, personal.',
   }),
+  userId: objectIdValidation(),
 });

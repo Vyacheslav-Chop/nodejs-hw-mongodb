@@ -5,16 +5,19 @@ import {
   getAllContacts,
   getContactById,
   updateContactById,
-} from '../sservices/contacts.js';
+} from '../services/contacts.js';
 import { buildContactsFilter } from '../utils/buildContactsFilter.js';
 
 export const getAllContactsController = async (req, res) => {
+  const filters = buildContactsFilter(req.validatedQuery);
+  filters.userId = req.user._id;
+
   const contacts = await getAllContacts({
     page: req.validatedQuery.page,
     perPage: req.validatedQuery.perPage,
     sortBy: req.validatedQuery.sortBy,
     sortOrder: req.validatedQuery.sortOrder,
-    filters: buildContactsFilter(req.validatedQuery),
+    filters,
   });
 
   res.status(200).json({
@@ -40,7 +43,10 @@ export const getContactByIdController = async (req, res, next) => {
 };
 
 export const createContactController = async (req, res) => {
-  const contact = await createContact(req.body);
+  const contact = await createContact({
+    ...req.body,
+    userId: req.user._id,
+  });
 
   res.status(201).json({
     status: 201,
@@ -51,7 +57,10 @@ export const createContactController = async (req, res) => {
 
 export const updateContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
-  const contact = await updateContactById(contactId, req.body);
+  const contact = await updateContactById(contactId, {
+    ...req.body,
+    userId: req.user._id,
+  });
 
   if (!contact) {
     return next(createHttpError(404, 'Contact not found'));
@@ -66,9 +75,8 @@ export const updateContactByIdController = async (req, res, next) => {
 
 export const deleteContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
-  console.log(contactId);
 
-  const contact = await deleteContactById(contactId);
+  const contact = await deleteContactById(contactId, req.user._id);
 
   if (!contact) {
     return next(createHttpError(404, 'Contact not found'));

@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { CONTACT_TYPE } from '../constants/constants.js';
+import { isValidObjectId } from 'mongoose';
 
 export const nameValidation = () => Joi.string().min(3).max(30);
 
@@ -18,3 +19,11 @@ export const contactTypeValidation = () =>
   Joi.string().valid(...Object.values(CONTACT_TYPE));
 
 export const passwordValidation = () => Joi.string().min(6);
+
+export const objectIdValidation = () => Joi.string().custom((value, helpers) => {
+  const isValidId = isValidObjectId(value);
+
+  if (!isValidId) return helpers.message('Not valid objectId');
+
+  return value;
+});

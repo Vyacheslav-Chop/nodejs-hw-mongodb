@@ -4,7 +4,7 @@ import {
   logoutUser,
   refreshContactsSession,
   registerUser,
-} from '../sservices/auth.js';
+} from '../services/auth.js';
 
 export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
