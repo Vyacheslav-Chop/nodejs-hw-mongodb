@@ -16,33 +16,33 @@ import { getContactsQuerySchema } from '../validation/getContactsQuerySchema.js'
 
 const contactsRouter = Router();
 
-contactsRouter.use('/contacts/:contactId', isValidId);
+contactsRouter.use('/:contactId', isValidId);
 
 contactsRouter.get(
-  '/contacts',
+  '/',
   validateQuery(getContactsQuerySchema),
   ctrlWrapper(getAllContactsController),
 );
 
 contactsRouter.get(
-  '/contacts/:contactId',
+  '/:contactId',
   ctrlWrapper(getContactByIdController),
 );
 
 contactsRouter.post(
-  '/contacts',
+  '/',
   validateBody(createContactSchema),
   ctrlWrapper(createContactController),
 );
 
 contactsRouter.patch(
-  '/contacts/:contactId',
+  '/:contactId',
   validateBody(updateContactSchema),
   ctrlWrapper(updateContactByIdController),
 );
 
 contactsRouter.delete(
-  '/contacts/:contactId',
+  '/:contactId',
   ctrlWrapper(deleteContactByIdController),
 );
 
