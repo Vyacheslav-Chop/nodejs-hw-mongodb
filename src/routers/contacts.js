@@ -14,12 +14,17 @@ import { isValidId } from '../middlewares/isValidId.js';
 import { validateQuery } from '../middlewares/validateQuery.js';
 import { getContactsQuerySchema } from '../validation/getContactsQuerySchema.js';
 import { authenticate } from '../middlewares/authenticate.js';
+import { checkPermissionsToInteractWithContact } from '../helpers/checkPermissionsToInteractWithContact.js';
 
 const contactsRouter = Router();
 
 contactsRouter.use('/', authenticate);
 
-contactsRouter.use('/:contactId', isValidId);
+contactsRouter.use(
+  '/:contactId',
+  isValidId,
+  checkPermissionsToInteractWithContact,
+);
 
 contactsRouter.get(
   '/',
