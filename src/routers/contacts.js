@@ -8,13 +8,12 @@ import {
   updateContactByIdController,
 } from '../controllers/contacts.js';
 import { validateBody } from '../middlewares/validateBody.js';
-import { createContactSchema } from '../validation/createContactShema.js';
-import { updateContactSchema } from '../validation/updateContactSchema.js';
 import { isValidId } from '../middlewares/isValidId.js';
 import { validateQuery } from '../middlewares/validateQuery.js';
-import { getContactsQuerySchema } from '../validation/getContactsQuerySchema.js';
 import { authenticate } from '../middlewares/authenticate.js';
-import { checkPermissionsToInteractWithContact } from '../helpers/checkPermissionsToInteractWithContact.js';
+import { checkPermissionsToInteractWithContact } from '../middlewares/checkPermissionsToInteractWithContact.js';
+import { createContactSchema, getContactsQuerySchema, updateContactSchema } from '../validation/contacts.js';
+
 
 const contactsRouter = Router();
 

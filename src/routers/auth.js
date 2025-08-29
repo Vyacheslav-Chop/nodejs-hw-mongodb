@@ -7,8 +7,7 @@ import {
 } from '../controllers/auth.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateBody } from '../middlewares/validateBody.js';
-import { registerUserSchema } from '../validation/registerUserSchema.js';
-import { loginUserSchema } from '../validation/loginUserSchema.js';
+import { loginUserSchema, registerUserSchema } from '../validation/auth.js';
 
 const authRouter = Router();
 
@@ -27,5 +26,7 @@ authRouter.post(
 authRouter.post('/refresh', ctrlWrapper(refreshContactsSesssionController));
 
 authRouter.post('/logout', ctrlWrapper(logoutUserController));
+
+authRouter.post('/send-reset-email');
 
 export default authRouter;
