@@ -5,6 +5,11 @@ import {
   passwordValidation,
 } from './helpers.js';
 
+export const resetPasswordSchema = Joi.object({
+  token: Joi.string().required(),
+  password: passwordValidation().required(),
+});
+
 export const requestResetEmailSchema = Joi.object({
   email: emailValidation().required(),
 });
@@ -42,3 +47,5 @@ export const registerUserSchema = Joi.object({
     'any.required': 'Password is required',
   }),
 });
+
+

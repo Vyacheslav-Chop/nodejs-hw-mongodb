@@ -13,11 +13,14 @@ const transport = nodemailer.createTransport({
   },
 });
 
-export const sendEmail = async () => {
+await transport.verify();
+
+export const sendEmail = async ({ to, subject, html }) => {
   try {
     await transport.sendMail({
-      to: 'syavchik260119901@gmail.com',
-      text: 'hello',
+      subject,
+      to,
+      html,
       from: getEnvVar(SMTP.SMTP_FROM),
     });
   } catch (error) {
@@ -25,5 +28,3 @@ export const sendEmail = async () => {
     throw createHttpError(500, 'Failed to sent email!');
   }
 };
-
-await sendEmail();

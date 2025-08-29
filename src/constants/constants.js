@@ -14,3 +14,8 @@ export const SMTP = {
   SMTP_PASSWORD: 'SMTP_PASSWORD',
   SMTP_FROM: 'SMTP_FROM',
 };
+
+export const ENV_VARS = {
+  JWT_SECRET: 'JWT_SECRET',
+  APP_DOMAIN: 'APP_DOMAIN',
+};

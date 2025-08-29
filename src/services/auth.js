@@ -2,7 +2,12 @@ import createHttpError from 'http-errors';
 import { UsersCollection } from '../db/models/user.js';
 import bcrypt from 'bcrypt';
 import { SessionsCollection } from '../db/models/session.js';
-import { createSession } from '../helpers/auth.js';
+import { createSession, resetPasswordTemplate } from '../helpers/auth.js';
+import { sendEmail } from '../utils/sendEmail.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
+import { ENV_VARS } from '../constants/constants.js';
+import jwt from 'jsonwebtoken';
+import Handlebars from 'handlebars';
 
 export const registerUser = async (payload) => {
   const existingUser = await UsersCollection.findOne({ email: payload.email });
@@ -64,4 +69,60 @@ export const refreshContactsSession = async (sessionId, refreshToken) => {
 
 export const logoutUser = async (sessionId) => {
   await SessionsCollection.deleteOne({ _id: sessionId });
+};
+
+export const requestResetEmail = async (email) => {
+  const user = await UsersCollection.findOne({ email });
+
+  if (!user) throw createHttpError(404, 'User not found!');
+
+  const host = getEnvVar(ENV_VARS.APP_DOMAIN);
+  const token = jwt.sign(
+    {
+      sub: user._id,
+      email: user.email,
+    },
+    getEnvVar(ENV_VARS.JWT_SECRET),
+    {
+      expiresIn: '5m',
+    },
+  );
+
+  const resetPasswordLink = `${host}/reset-pwd?token=${token}`;
+
+  const template = Handlebars.compile(resetPasswordTemplate);
+
+  const html = template({
+    name: user.name,
+    link: resetPasswordLink,
+    year: new Date().getFullYear(),
+  });
+
+  await sendEmail({
+    to: email,
+    subject: 'Reset your password!',
+    html,
+  });
+};
+
+export const resetPassword = async (token, password) => {
+  let entries;
+  try {
+    entries = jwt.verify(token, getEnvVar(ENV_VARS.JWT_SECRET));
+  } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      throw createHttpError(401, 'Token is expired or invalid.');
+    }
+    if (err instanceof Error) {
+      throw createHttpError(401, err.message);
+    }
+  }
+
+  const user = await UsersCollection.findById(entries.sub);
+
+  if (!user) throw createHttpError(404, 'User not found');
+
+  user.password = await bcrypt.hash(password, 10);
+
+  await user.save();
 };

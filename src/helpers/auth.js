@@ -1,5 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import { FIFTEEN_MINUTES, THIRTY_DAYS } from '../constants/constants.js';
+import fs from 'node:fs';
+import { TEMPLATE_DIR_PATH } from '../constants/path.js';
 
 export const createSession = (userId) => {
   const accessToken = randomBytes(30).toString('base64');
@@ -25,3 +27,5 @@ export const setupSession = (res, session) => {
     expires: new Date(Date.now() + THIRTY_DAYS),
   });
 };
+
+export const resetPasswordTemplate = fs.readFileSync(TEMPLATE_DIR_PATH).toString();
