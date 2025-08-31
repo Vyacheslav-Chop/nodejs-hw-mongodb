@@ -7,6 +7,7 @@ import {
   updateContactById,
 } from '../services/contacts.js';
 import { buildContactsFilter } from '../utils/buildContactsFilter.js';
+import { handlePhotoUpload } from '../utils/handlePhotoUpload.js';
 
 export const getAllContactsController = async (req, res) => {
   const filters = buildContactsFilter(req.validatedQuery);
@@ -43,9 +44,12 @@ export const getContactByIdController = async (req, res, next) => {
 };
 
 export const createContactController = async (req, res) => {
+  const photoUrl = req.file ? await handlePhotoUpload(req.file) : undefined;
+
   const contact = await createContact({
     ...req.body,
     userId: req.user._id,
+    ...(photoUrl && { photo: photoUrl }),
   });
 
   res.status(201).json({
@@ -57,7 +61,13 @@ export const createContactController = async (req, res) => {
 
 export const updateContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
-  const contact = await updateContactById(contactId, req.body);
+
+  const photoUrl = req.file ? await handlePhotoUpload(req.file) : undefined;
+
+  const contact = await updateContactById(contactId, {
+    ...req.body,
+    ...(photoUrl && { photo: photoUrl }),
+  });
 
   if (!contact) {
     return next(createHttpError(404, 'Contact not found'));

@@ -5,3 +5,7 @@ export const TEMPLATE_DIR_PATH = path.join(
   'templates',
   'send-reset-password-email.html',
 );
+
+export const TEMP_FILES_DIR_PATH = path.join(process.cwd(), 'temp');
+
+export const UPLOAD_FILES_DIR_PATH = path.join(process.cwd(), 'uploads');

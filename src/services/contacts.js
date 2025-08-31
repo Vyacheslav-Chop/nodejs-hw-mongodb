@@ -1,5 +1,7 @@
+
 import { ContactsCollection } from '../db/models/contact.js';
 import { createPaginationData } from '../utils/createPaginationData.js';
+
 
 export const getAllContacts = async ({
   page = 1,

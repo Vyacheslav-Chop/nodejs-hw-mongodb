@@ -6,6 +6,7 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import router from './routers/index.js';
 import cookieParser from 'cookie-parser';
+import { UPLOAD_FILES_DIR_PATH } from './constants/path.js';
 
 const PORT = Number(getEnvVar('PORT', '3000'));
 
@@ -23,6 +24,8 @@ export const setupServer = () => {
       },
     }),
   );
+
+  app.use('/uploads', express.static(UPLOAD_FILES_DIR_PATH));
 
   app.use(router);
 
