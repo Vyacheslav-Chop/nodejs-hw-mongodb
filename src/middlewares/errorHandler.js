@@ -2,12 +2,11 @@ import { isHttpError } from 'http-errors';
 import { MongooseError } from 'mongoose';
 
 export const errorHandler = async (err, req, res, next) => {
-  console.log(err);
-
   if (isHttpError(err)) {
     return res.status(err.status).json({
       status: err.status,
-      message: err.message,
+      message: err.name,
+      data: { message: err.message },
     });
   }
 
@@ -15,7 +14,7 @@ export const errorHandler = async (err, req, res, next) => {
     return res.status(400).json({
       status: 400,
       message: 'Bad request',
-      errors: err.details.map((err) => ({
+      data: err.details.map((err) => ({
         path: err.path,
         message: err.message,
       })),
@@ -26,7 +25,7 @@ export const errorHandler = async (err, req, res, next) => {
     return res.status(500).json({
       status: 500,
       message: 'MongooseError',
-      error: err.message,
+      data: err.message,
     });
   }
 
