@@ -1,0 +1,43 @@
+tags:
+  - Auth
+summary: Request password reset email
+operationId: requestResetEmail
+description: 'Send a reset password email to the specified user.'
+security: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - email
+        properties:
+          email:
+            description: "Email of the user to send reset password link."
+            type: string
+            example: "example@email.com"
+responses:
+  '200':
+    description: Reset password email
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: "If an account with this email exists, a reset link has been sent."
+            data:
+              type: object
+  '404':
+    $ref: '../../components/responses/404.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

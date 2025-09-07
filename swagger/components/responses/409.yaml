@@ -21,4 +21,4 @@ content:
           properties:
             message:
               type: string
-              example: "User with this email already exists"
+              example: "This action cannot be performed"

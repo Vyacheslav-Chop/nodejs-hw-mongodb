@@ -52,7 +52,7 @@ requestBody:
             format: binary
 responses:
   '200':
-    description: Creates a contact
+    description: Successfully updated a contact
     content:
       application/json:
         schema:
@@ -76,4 +76,4 @@ responses:
   '400':
     $ref: '../../../components/responses/400.yaml'
   '404':
-    $ref: '../../../components/responses/404notFound.yaml'
+    $ref: '../../../components/responses/404.yaml'
