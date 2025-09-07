@@ -1,5 +1,5 @@
 tags:
-  -  Auth
+  - Auth
 summary: Refresh user session
 operationId: refreshSession
 description: 'Refreshes an existing session using a refresh token. Returns a new access token.'
@@ -11,26 +11,36 @@ parameters:
     schema:
       type: string
       example: '65e4decdd286b30065d54af9'
-    description: "ID of the current session"
+    description: 'ID of the current session'
   - in: cookie
     name: refreshToken
     required: true
     schema:
       type: string
       example: 'XyZ12AbC34DefGhI56JkLmNoP78QrStUvWxYz90AaBb'
-    description: "Refresh token to renew the session"
+    description: 'Refresh token to renew the session'
 
 responses:
   '200':
     description: 'Successfully refreshed a session!'
+    headers:
+      Set-Cookie:
+        description: Cookies set after successful login.
+        schema:
+          type: array
+          items:
+            type: string
+            example:
+              - session_id=abc123; Path=/; HttpOnly;
+              - refresh_token=xyz789; Path=/; HttpOnly;
     content:
       application/json:
         schema:
           type: object
           required:
-            -  status
-            -  message
-            -  data
+            - status
+            - message
+            - data
           properties:
             status:
               type: integer
@@ -43,7 +53,7 @@ responses:
               properties:
                 accessToken:
                   type: string
-                  example: "XyZ12AbC34DefGhI56JkLmNoP78QrStUvWxYz90AaBb"
+                  example: 'XyZ12AbC34DefGhI56JkLmNoP78QrStUvWxYz90AaBb'
 
   '401':
-   $ref: '../../components/responses/401.yaml'
+    $ref: '../../components/responses/401.yaml'

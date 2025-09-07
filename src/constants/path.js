@@ -9,3 +9,5 @@ export const TEMPLATE_DIR_PATH = path.join(
 export const TEMP_FILES_DIR_PATH = path.join(process.cwd(), 'temp');
 
 export const UPLOAD_FILES_DIR_PATH = path.join(process.cwd(), 'uploads');
+
+export const SWAGGER_PATH = path.join(process.cwd(), 'docs', 'swagger.json');

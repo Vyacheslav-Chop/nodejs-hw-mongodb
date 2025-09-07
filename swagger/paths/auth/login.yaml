@@ -27,6 +27,16 @@ requestBody:
 responses:
   '200':
     description: 'Successfully logged in a user!'
+    headers:
+      Set-Cookie:
+        description: Cookies set after successful login.
+        schema:
+          type: array
+          items:
+            type: string
+            example:
+              - session_id=abc123; Path=/; HttpOnly; 
+              - refresh_token=xyz789; Path=/; HttpOnly; 
     content:
       application/json:
         schema:
